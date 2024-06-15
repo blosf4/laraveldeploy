@@ -124,7 +124,7 @@
                     </div>
                 </div>
                 <p class="mb-12 text-base text-center text-gray-500">
-                    В данном блоке представлены все популярные бренды, который продает наш магазин.
+                    В данном блоке представлены все популярные бренды, которые продает наш магазин.
                 </p>
             </div>
         </div>
@@ -238,7 +238,7 @@
                             </div>
                             <div>
                                 <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-300">
-                                    Соня Незнайкина</h2>
+                                    Виола Агапова</h2>
                                 <p class="text-xs text-gray-500 dark:text-gray-400">Покупатель</p>
                             </div>
                         </div>
@@ -258,7 +258,7 @@
                             </div>
                             <div>
                                 <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-300">
-                                    Марина Знайкина</h2>
+                                    Марина Иванова</h2>
                                 <p class="text-xs text-gray-500 dark:text-gray-400">Покупатель</p>
                             </div>
                         </div>
@@ -298,7 +298,7 @@
                             </div>
                             <div>
                                 <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-300">
-                                    Антон Незнайкин</h2>
+                                    Антон Власов</h2>
                                 <p class="text-xs text-gray-500 dark:text-gray-400">Покупатель</p>
                             </div>
                         </div>

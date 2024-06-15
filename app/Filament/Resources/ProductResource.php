@@ -43,22 +43,25 @@ class ProductResource extends Resource
         return $form
             ->schema([
                 Group::make([
-                    Section::make('Product info')->schema([
+                    Section::make('Информация о продукте')->schema([
                         TextInput::make('name')
+                            ->label('Название')
                         ->required()
                         ->maxLength(255),
 
                         TextInput::make('slug')
+                            ->label('Путь')
                         ->required()
                         ->dehydrated()
                         ->maxLength(255),
 
                         MarkdownEditor::make('description')
+                            ->label('Описание')
                         ->columnSpanFull()
                         ->fileAttachmentsDirectory('products')
                     ])->columns(2),
 
-                    Section::make('Images')->schema([
+                    Section::make('Картинки')->schema([
                         FileUpload::make('images')
                         ->multiple()
                         ->directory('products')
@@ -70,37 +73,43 @@ class ProductResource extends Resource
                 ])->columnSpan(2),
 
                 Group::make()->schema([
-                    Section::make('Price')->schema([
+                    Section::make('Цена')->schema([
                         TextInput::make('price')
                         ->numeric()
                         ->required()
                         ->prefix('rub')
                     ]),
 
-                    Section::make('Associations')->schema([
+                    Section::make('Связь')->schema([
                         Select::make('category_id')
+                            ->label('Категория')
                         ->required()
                         ->searchable()
                         ->preload()
                         ->relationship('category', 'name'),
 
                     Select::make('brand_id')
+                        ->label('Бренд')
                         ->required()
                         ->searchable()
                         ->preload()
                         ->relationship('brand', 'name'),
                     ]),
 
-                    Section::make('Status')->schema([
+                    Section::make('Статус')->schema([
                         Toggle::make('in_stock')
+                            ->label('В наличии')
                             ->required()
                             ->default(true),
                         Toggle::make('in_active')
+                            ->label('Активен')
                             ->required()
                             ->default(true),
                         Toggle::make('is_featured')
+                            ->label('Продвижение')
                             ->required(),
                         Toggle::make('on_sale')
+                            ->label('В продаже')
                             ->required()
                     ])
                 ])->columns(1)
@@ -111,38 +120,38 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')->searchable(),
-                TextColumn::make('category.name')->sortable(),
-                TextColumn::make('brand.name')->sortable(),
-                TextColumn::make('price')->money('RUB')->sortable(),
+                TextColumn::make('name')->searchable()->label('Название'),
+                TextColumn::make('category.name')->sortable()->label('Категория'),
+                TextColumn::make('brand.name')->sortable()->label('Бренд'),
+                TextColumn::make('price')->money('RUB')->sortable()->label('Цена'),
 
-                IconColumn::make('is_featured')->boolean(),
-                IconColumn::make('on_sale')->boolean(),
-                IconColumn::make('in_stock')->boolean(),
-                IconColumn::make('is_active')->boolean(),
+                IconColumn::make('is_featured')->boolean()->label('Продвижение'),
+                IconColumn::make('on_sale')->boolean()->label('В продаже'),
+                IconColumn::make('in_stock')->boolean()->label('В наличии'),
+                IconColumn::make('is_active')->boolean()->label('Активен'),
 
-                TextColumn::make('created_at')->dateTime()->sortable()->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('update_at')->dateTime()->sortable()->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('created_at')->dateTime()->sortable()->toggleable(isToggledHiddenByDefault: true)->label('Создано'),
+                TextColumn::make('update_at')->dateTime()->sortable()->toggleable(isToggledHiddenByDefault: true)->label('Обновлено'),
 
 
 
             ])
             ->filters([
-                SelectFilter::make('category')->relationship('category', 'name'),
+                SelectFilter::make('category')->relationship('category', 'name')->label('Категория'),
 
-                SelectFilter::make('brand')->relationship('brand', 'name'),
+                SelectFilter::make('brand')->relationship('brand', 'name')->label('Название'),
 
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
-                    Tables\Actions\ViewAction::make(),
-                    Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\ViewAction::make()->label('Обзор'),
+                    Tables\Actions\EditAction::make()->label('Изменить'),
+                    Tables\Actions\DeleteAction::make()->label('Удалить'),
                 ])
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()->label('Удалить'),
                 ]),
             ]);
     }
@@ -153,6 +162,12 @@ class ProductResource extends Resource
             //
         ];
     }
+
+    public static function getNavigationLabel(): string
+    {
+        return 'Продукты';
+    }
+
 
     public static function getPages(): array
     {

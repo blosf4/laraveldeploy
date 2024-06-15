@@ -32,45 +32,52 @@ class OrderResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Group::make()->schema([
-                    Forms\Components\Section::make('Order Info')->schema([
+                    Forms\Components\Section::make('Информация заказа')->schema([
                         Forms\Components\Select::make('user_id')
-                        ->label('Customer')
+                        ->label('Клиент')
                         ->relationship('user', 'name')
                         ->searchable()
                         ->preload()
                         ->required(),
 
                         Forms\Components\Select::make('payment_method')
+                            ->label('Метод оплаты')
                         ->options([
-                            'stripe' => 'Stripe',
-                            'cod' => 'Cash on delivery'
+                            'stripe' => 'Онлайн оплата',
+                            'cod' => 'Оплата наличными'
                         ])
-                        ->required(),
+                            ->default('cod')
+
+                            ->required(),
 
                         Select::make('payment_status')
+                            ->label('Статус платежа')
                         ->options([
-                            'pending' => 'Pending',
-                            'paid' => 'Paid',
-                            'failed' => 'Failed'
+                            'pending' => 'Ожидаемый',
+                            'paid' => 'Оплачиваемый',
+                            'failed' => 'Отмена'
                         ])
                         ->default('pending')
                         ->required(),
 
                         Forms\Components\ToggleButtons::make('status')
+                            ->label('Статус заказа')
                             ->inline()
                             ->default('new')
                             ->required()
                         ->options([
-                            'new' => 'New',
-                            'processing' => 'Processing',
-                            'shipped' => 'Shipped',
-                            'delivered' => 'Delivered',
-                            'cancelled' => 'Cancelled'
+                            'new' => 'Новый',
+                            'processing' => 'В процессе',
+                            'shipped' => 'Отправленный',
+                            'delivered' => 'Доставлен',
+                            'cancelled' => 'Отмена'
                         ])
                         ->colors([
                             'new' => 'info',
@@ -88,6 +95,7 @@ class OrderResource extends Resource
                         ]),
 
                         Select::make('currency')
+                            ->label('Валюта')
                         ->options([
                             'rub'=>'RUB'
                         ])
@@ -95,24 +103,28 @@ class OrderResource extends Resource
                         ->required(),
 
                         Select::make('shipping_method')
+                            ->label('Метод доставки')
                         ->options([
-                            'fedex' => 'FedEx',
-                            'ups' =>'UPS',
-                            'dhl' => 'DHL',
+                            'fedex' => 'СДЭК',
+                            'ups' =>'Авито доставка',
+                            'dhl' => 'Почта России',
                         ])
                         ->default('fedex'),
 
                         Textarea::make('notes')
+                            ->label('Запись')
                         ->columnSpanFull()
 
                     ])->columns(2),
 
-                    Forms\Components\Section::make('Order Item')->schema([
+                    Forms\Components\Section::make('Корзина заказа')->schema([
                         Forms\Components\Repeater::make('items')
+                            ->label('Заказ')
                         ->relationship()
                         ->schema([
                             Forms\Components\Select::make('product_id')
                             ->relationship('product', 'name')
+                                ->label('Заказ')
                             ->searchable()
                             ->preload()
                             ->required()
@@ -127,6 +139,7 @@ class OrderResource extends Resource
 
 
                             TextInput::make('quantity')
+                                ->label('Количество')
                             ->numeric()
                                 ->required()
                             ->default(1)
@@ -137,6 +150,7 @@ class OrderResource extends Resource
                                 $state*$get('unit_amount'))),
 
                             TextInput::make('unit_amount')
+                                ->label('Цена за ед.')
                                 ->numeric()
                             ->required()
                             ->disabled()
@@ -144,13 +158,14 @@ class OrderResource extends Resource
                             ->columnSpan(3),
 
                             TextInput::make('total_amount')
+                                ->label('Итого')
                             ->numeric()
                             ->required()
                                 ->dehydrated()
                             ->columnSpan(3),
                         ])->columns(12),
                         Placeholder::make('grand_total_placeholder')
-                        ->label('Grand Total')
+                        ->label('Итого')
                         ->content(function (Forms\Get $get, Forms\Set $set){
                             $total = 0;
                             if(!$repeaters = $get('items')){
@@ -175,49 +190,44 @@ class OrderResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('user.name')
-                    ->label('Customer')
+                    ->label('Клиент')
                 ->sortable()
                 ->searchable(),
 
                 TextColumn::make('grand_total')
+                    ->label('Общая сумма')
                     ->numeric()
                     ->sortable()
                     ->money('rub'),
 
-                TextColumn::make('payment_method')
-                    ->sortable()
-                    ->searchable(),
-
-                TextColumn::make('payment_status')
-                ->sortable()
-                ->searchable(),
 
                 TextColumn::make('currency')
+                    ->label('Валюта')
                 ->searchable()
                 ->sortable(),
 
-                TextColumn::make('shipping_method')
-                    ->searchable()
-                    ->sortable(),
+
 
                 Tables\Columns\SelectColumn::make('status')
                 ->options([
-                    'new' => 'New',
-                    'processing' => 'Processing',
-                    'shipped' => 'Shipped',
-                    'delivered' => 'Delivered',
-                    'cancelled' => 'Cancelled'
+                    'new' => 'новый',
+                    'processing' => 'в обработке',
+                    'shipped' => 'отправлено',
+                    'delivered' => 'доставлен',
+                    'cancelled' => 'отмена'
                 ])
                 ->searchable()
                 ->sortable(),
 
 
                 TextColumn::make('created_at')
+                    ->label('Создано')
                 ->dateTime()
                 ->sortable()
                 ->toggleable(isToggledHiddenByDefault: true),
 
                 TextColumn::make('update_at')
+                    ->label('Обновлено')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -229,9 +239,9 @@ class OrderResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
-                    Tables\Actions\ViewAction::make(),
-                    Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\ViewAction::make()->label('Обзор'),
+                    Tables\Actions\EditAction::make()->label('Изменить'),
+                    Tables\Actions\DeleteAction::make()->label('Удалить'),
                 ])
             ])
             ->bulkActions([
@@ -259,10 +269,10 @@ class OrderResource extends Resource
 
     }
 
-//    public static function getNavigationLabel(): string
-//    {
-//        return 'new name урарура';
-//    }
+    public static function getNavigationLabel(): string
+    {
+        return 'Заказы';
+    }
 
 
     public static function getPages(): array

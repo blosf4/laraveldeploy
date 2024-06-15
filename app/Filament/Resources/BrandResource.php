@@ -26,6 +26,8 @@ class BrandResource extends Resource
 
 
 
+
+
     public static function form(Form $form): Form
     {
         return $form
@@ -33,17 +35,21 @@ class BrandResource extends Resource
                 Forms\Components\Section::make([
                     Forms\Components\Grid::make()->schema([
                         Forms\Components\TextInput::make('name')
+                            ->label('Название')
                             ->required()
                             ->maxLength(255),
                         Forms\Components\TextInput::make('slug')
+                            ->label('Путь')
                             ->required()
                             ->maxLength(255)
                             ->unique(Brand::class, 'slug', ignoreRecord: true)
                     ]),
                     FileUpload::make('image')
+                        ->label('Картинка')
                         ->image()
                         ->directory('brand'),
                     Forms\Components\Toggle::make('is_active')
+                        ->label('Статус активности')
                         ->required()
                         ->default(true)
                 ])
@@ -55,17 +61,22 @@ class BrandResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label('Название')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('slug')
+                    ->label('Путь')
                     ->searchable(),
-                Tables\Columns\ImageColumn::make('image'),
+                Tables\Columns\ImageColumn::make('image')->label('Картинка'),
                 Tables\Columns\IconColumn::make('is_active')
+                    ->label('Статус')
                     ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label('Создано')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label('Обновлено')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -75,9 +86,9 @@ class BrandResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
-                    Tables\Actions\ViewAction::make(),
-                    Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\ViewAction::make()->label('Обзор'),
+                    Tables\Actions\EditAction::make()->label('Изменить'),
+                    Tables\Actions\DeleteAction::make()->label('Удалить'),
                 ])
             ])
             ->bulkActions([
@@ -93,6 +104,12 @@ class BrandResource extends Resource
             //
         ];
     }
+
+    public static function getNavigationLabel(): string
+    {
+        return 'Бренды';
+    }
+
 
     public static function getPages(): array
     {

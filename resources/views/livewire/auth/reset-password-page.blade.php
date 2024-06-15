@@ -4,7 +4,7 @@
             <div class="mt-7 bg-white border border-gray-200 rounded-xl shadow-sm dark:bg-gray-800 dark:border-gray-700">
                 <div class="p-4 sm:p-7">
                     <div class="text-center">
-                        <h1 class="block text-2xl font-bold text-gray-800 dark:text-white">Reset password</h1>
+                        <h1 class="block text-2xl font-bold text-gray-800 dark:text-white">Сброс пароля</h1>
                     </div>
 
                     <div class="mt-5">
@@ -13,7 +13,7 @@
                             <div class="grid gap-y-4">
                                 <!-- Form Group -->
                                 <div>
-                                    <label for="password" class="block text-sm mb-2 dark:text-white">Password</label>
+                                    <label for="password" class="block text-sm mb-2 dark:text-white">Пароль</label>
                                     <div class="relative">
                                         <input type="password" id="password" name="password" class="py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600" required aria-describedby="email-error">
                                         <div class="hidden absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3">
@@ -22,12 +22,12 @@
                                             </svg>
                                         </div>
                                     </div>
-                                    <p class="hidden text-red-600 mt-2" id="password-error">Password error message</p>
+                                    <p class="hidden text-red-600 mt-2" id="password-error">Ошибка ввода</p>
                                 </div>
                                 <!-- End Form Group -->
 
                                 <div>
-                                    <label for="password_confirmation" class="block text-sm mb-2 dark:text-white">Confirm Password</label>
+                                    <label for="password_confirmation" class="block text-sm mb-2 dark:text-white">Подтвердите пароль</label>
                                     <div class="relative">
                                         <input type="password" id="password_confirmation" name="password_confirmation" class="py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600" required aria-describedby="email-error">
 
@@ -38,11 +38,11 @@
                                         </div>
 
                                     </div>
-                                    <p class="text-xs text-red-600 mt-2" id="password_confirmation-error">Confirm Password Error</p>
+                                    <p class="text-xs text-red-600 mt-2" id="password_confirmation-error">Ошибка подтверждения пароля</p>
                                 </div>
 
                                 <button type="submit" class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
-                                    Save password
+                                    Сохранить пароль
                                 </button>
                             </div>
                         </form>

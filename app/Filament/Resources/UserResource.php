@@ -24,6 +24,7 @@ class UserResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
+
     protected static ?int $navigationSort = 1;
 
 
@@ -32,19 +33,21 @@ class UserResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                    ->label('Имя')
                     ->required(),
                 Forms\Components\TextInput::make('email')
-                    ->label('Email Address')
+                    ->label('Почта')
                     ->email()
                     ->maxLength(255)
                     ->unique(ignoreRecord: true)
                     ->required(),
 
                 Forms\Components\DateTimePicker::make('email_verified_at')
-                    ->label('Email Verified At')
+                    ->label('Верификация')
                     ->default(now()),
 
                 Forms\Components\TextInput::make('password')
+                    ->label('Пароль')
                     ->password()
                     ->dehydrated(fn($state) => filled($state))
                     ->required(fn(Page $livewire): bool => $livewire instanceof CreateRecord),
@@ -57,13 +60,17 @@ class UserResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label('Имя')
                 ->searchable(),
                 Tables\Columns\TextColumn::make('email')
+                    ->label('Почта')
                 ->searchable(),
                 Tables\Columns\TextColumn::make('email_verified_at')
+                    ->label('Верификация')
                 ->dateTime()
                 ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label('Создано')
                     ->dateTime()
                     ->sortable(),
 
@@ -73,9 +80,10 @@ class UserResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
-                    Tables\Actions\ViewAction::make(),
-                    Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make(),])
+                    Tables\Actions\ViewAction::make()->label('Обзор'),
+                    Tables\Actions\EditAction::make()->label('Изменить'),
+                    Tables\Actions\DeleteAction::make()->label('Удалить'),
+                    ])
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -95,6 +103,12 @@ class UserResource extends Resource
     {
         return ['name', 'email'];
     }
+
+    public static function getNavigationLabel(): string
+    {
+        return 'Пользователи';
+    }
+
 
     public static function getPages(): array
     {
